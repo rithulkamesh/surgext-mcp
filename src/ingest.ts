@@ -14,7 +14,7 @@ const BRANCH = 'main';
 
 async function fetchTree() {
   const url = `https://api.github.com/repos/${REPO}/git/trees/${BRANCH}?recursive=1`;
-  const res = await fetch(url, { headers: { 'User-Agent': 'surge-xt-docs-mcp' } });
+  const res = await fetch(url, { headers: { 'User-Agent': 'surgext-mcp' } });
   if (!res.ok) throw new Error(`Failed to fetch tree: ${res.statusText}`);
   const data = await res.json();
   return data.tree;
@@ -22,7 +22,7 @@ async function fetchTree() {
 
 async function fetchCommitSha() {
   const url = `https://api.github.com/repos/${REPO}/branches/${BRANCH}`;
-  const res = await fetch(url, { headers: { 'User-Agent': 'surge-xt-docs-mcp' } });
+  const res = await fetch(url, { headers: { 'User-Agent': 'surgext-mcp' } });
   if (!res.ok) throw new Error(`Failed to fetch branch info: ${res.statusText}`);
   const data = await res.json();
   return data.commit.sha;

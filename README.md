@@ -30,7 +30,7 @@ Add this to your `claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
-    "surge-xt-docs": {
+    "surgext-mcp": {
       "command": "node",
       "args": ["/path/to/surgext-mcp/dist/index.js"]
     }
@@ -46,7 +46,7 @@ In your `.cursor/settings.json` or global cursor settings under MCP configuratio
 {
   "mcp": {
     "servers": {
-      "surge-xt-docs": {
+      "surgext-mcp": {
         "command": "node",
         "args": ["/path/to/surgext-mcp/dist/index.js"]
       }
@@ -62,7 +62,7 @@ Add the following to your `opencode.json` configuration:
 ```json
 {
   "mcpServers": {
-    "surge-xt-docs": {
+    "surgext-mcp": {
       "command": "node",
       "args": ["/path/to/surgext-mcp/dist/index.js"]
     }

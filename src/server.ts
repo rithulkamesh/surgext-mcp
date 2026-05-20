@@ -8,7 +8,7 @@ import { initSearch, searchDocs, getSection, listSections, searchParameters } fr
 
 const server = new Server(
   {
-    name: "surge-xt-docs",
+    name: "surgext-mcp",
     version: "1.0.0",
   },
   {

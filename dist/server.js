@@ -3,7 +3,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { CallToolRequestSchema, ListToolsRequestSchema, } from "@modelcontextprotocol/sdk/types.js";
 import { initSearch, searchDocs, getSection, listSections, searchParameters } from "./search.js";
 const server = new Server({
-    name: "surge-xt-docs",
+    name: "surgext-mcp",
     version: "1.0.0",
 }, {
     capabilities: {

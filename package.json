@@ -1,10 +1,10 @@
 {
-  "name": "surge-xt-docs-mcp",
+  "name": "surgext-mcp",
   "version": "1.0.0",
   "description": "MCP server for Surge XT documentation",
   "type": "module",
   "bin": {
-    "surge-xt-docs-mcp": "./dist/index.js"
+    "surgext-mcp": "./dist/index.js"
   },
   "files": [
     "dist",
