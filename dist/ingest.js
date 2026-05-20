@@ -9,6 +9,14 @@ async function fetchTree() {
     const data = await res.json();
     return data.tree;
 }
+async function fetchCommitSha() {
+    const url = `https://api.github.com/repos/${REPO}/branches/${BRANCH}`;
+    const res = await fetch(url, { headers: { 'User-Agent': 'surge-xt-docs-mcp' } });
+    if (!res.ok)
+        throw new Error(`Failed to fetch branch info: ${res.statusText}`);
+    const data = await res.json();
+    return data.commit.sha;
+}
 function chunkMarkdown(markdown, filePath) {
     const lines = markdown.split('\n');
     const chunks = [];
@@ -43,9 +51,10 @@ function chunkMarkdown(markdown, filePath) {
     saveCurrentChunk();
     return chunks;
 }
-async function run() {
+export async function run() {
     console.log('Fetching repo tree...');
     const tree = await fetchTree();
+    const sha = await fetchCommitSha();
     const filesToProcess = tree.filter((item) => item.type === 'blob' &&
         (item.path.startsWith('docs/') || (!item.path.includes('/') && item.path.endsWith('.md'))));
     console.log(`Found ${filesToProcess.length} files to process.`);
@@ -64,6 +73,10 @@ async function run() {
     }
     await fs.mkdir('data', { recursive: true });
     await fs.writeFile('data/chunks.json', JSON.stringify(allChunks, null, 2));
+    await fs.writeFile('data/meta.json', JSON.stringify({ sha, date: new Date().toISOString() }));
     console.log(`Saved ${allChunks.length} chunks to data/chunks.json`);
+    console.log(`Ingested commit SHA: ${sha}`);
 }
-run().catch(console.error);
+if (import.meta.url === `file://${process.argv[1]}`) {
+    run().catch(console.error);
+}
