@@ -9,8 +9,8 @@ export interface Chunk {
   url: string;
 }
 
-const REPO = 'surge-synthesizer/surge';
-const BRANCH = 'main';
+const REPO = 'surge-synthesizer/surge-synthesizer.github.io';
+const BRANCH = 'master';
 
 async function fetchTree() {
   const url = `https://api.github.com/repos/${REPO}/git/trees/${BRANCH}?recursive=1`;
@@ -28,8 +28,14 @@ async function fetchCommitSha() {
   return data.commit.sha;
 }
 
+function stripFrontmatter(markdown: string): string {
+  if (!markdown.startsWith('---')) return markdown;
+  const end = markdown.indexOf('\n---', 3);
+  return end === -1 ? markdown : markdown.slice(end + 4).trimStart();
+}
+
 function chunkMarkdown(markdown: string, filePath: string): Chunk[] {
-  const lines = markdown.split('\n');
+  const lines = stripFrontmatter(markdown).split('\n');
   const chunks: Chunk[] = [];
   let currentHeadings: { level: number; text: string }[] = [];
   let currentContent: string[] = [];
@@ -42,7 +48,7 @@ function chunkMarkdown(markdown: string, filePath: string): Chunk[] {
         source_file: filePath,
         heading_path,
         content: currentContent.join('\n').trim(),
-        url: `https://github.com/${REPO}/blob/${BRANCH}/${filePath}`
+        url: `https://surge-synthesizer.github.io/manual_xt/`
       });
     }
   }
@@ -69,9 +75,10 @@ export async function run() {
   const tree = await fetchTree();
   const sha = await fetchCommitSha();
   
-  const filesToProcess = tree.filter((item: any) => 
-    item.type === 'blob' && 
-    (item.path.startsWith('docs/') || (!item.path.includes('/') && item.path.endsWith('.md')))
+  const filesToProcess = tree.filter((item: any) =>
+    item.type === 'blob' &&
+    item.path.startsWith('src/content/manual_xt/') &&
+    (item.path.endsWith('.md') || item.path.endsWith('.mdx'))
   );
 
   console.log(`Found ${filesToProcess.length} files to process.`);
